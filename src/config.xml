@@ -3349,6 +3349,14 @@ remove the intermediate dot files that are used to generate the various graphs.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_HTML_ONLYSHOWMODULES' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_HTML_ONLYSHOWMODULES tag is set to \c YES doxygen will only show
+modules in the HTML tree view.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
