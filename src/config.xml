@@ -3404,6 +3404,14 @@ If the \c NIMBUSKIT_HIDE_INHERITANCE_DESCRIPTION tag is set to \c YES then the
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_PROPERTIES_ARE_PUBLIC_METHODS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_PROPERTIES_ARE_PUBLIC_METHODS tag is set to \c YES then properties
+will be listed along public methods.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
