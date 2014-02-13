@@ -1069,6 +1069,7 @@ static void generateJSLink(FTextStream &t,FTVNode *n)
   if (prefixToStrip) {
     prefixToStrip.prepend("^");
     name.replace(QRegExp(prefixToStrip), "");
+    name = name.stripWhiteSpace();
   }
   if (n->file.isEmpty()) // no link
   {
@@ -1092,7 +1093,7 @@ static QCString convertFileId2Var(const QCString &fileId)
 }
 
 static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t, 
-                           const QList<FTVNode> &nl,int level,bool &first,bool recurse=true)
+                           const QList<FTVNode> &nl,int level,bool &first)
 {
   static QCString htmlOutput = Config_getString("HTML_OUTPUT");
   QCString indentStr;
@@ -1102,6 +1103,16 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
   FTVNode *n;
   for (nli.toFirst();(n=nli.current());++nli)
   {
+    if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
+      if (n->def) {
+        // Skip anything that has a definition. We're only adding modules.
+        continue;
+      }
+      if (!n->anchor.isEmpty()) {
+        continue;
+      }
+    }
+
     // terminate previous entry
     if (!first) t << "," << endl;
 
@@ -1112,15 +1123,6 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
     }
     found=TRUE;
 
-    if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
-      if (n->def) {
-        // Skip anything that has a definition. We're only adding modules.
-        continue;
-      }
-      if (!n->anchor.isEmpty()) {
-        continue;
-      }
-    }
     first=FALSE;
     if (n->addToNavIndex) // add entry to the navigation index
     {
@@ -1144,25 +1146,13 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
       }
     }
 
-    if (n->separateIndex) // store items in a separate file for dynamic loading
+    if (n->separateIndex && !Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) // store items in a separate file for dynamic loading
     {
       bool firstChild=TRUE;
       t << indentStr << "  [ ";
       generateJSLink(t,n);
 
-      bool hasChildren = n->children.count()>0;
-      if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
-        QListIterator<FTVNode> nli_children(n->children);
-        FTVNode *n_child;
-        hasChildren = false;
-        for (nli_children.toFirst();(n_child=nli_children.current());++nli_children) {
-          if (!n_child->def && n_child->anchor.isEmpty()) {
-            hasChildren = true;
-            break;
-          }
-        }
-      }
-      if (hasChildren) // write children to separate file for dynamic loading
+      if (n->children.count()>0) // write children to separate file for dynamic loading
       {
         // Check that at least one child isn't an anchor.
         QCString fileId = n->file;
@@ -1180,8 +1170,7 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
           FTextStream tt(&f);
           // NOTE: individual module .js files are generated here.
           tt << "var " << convertFileId2Var(fileId) << " =" << endl;
-          bool shouldRecurse = !Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES");
-          generateJSTree(navIndex,tt,n->children,1,firstChild,shouldRecurse);
+          generateJSTree(navIndex,tt,n->children,1,firstChild);
           tt << endl << "];"; 
         }
         t << "\"" << fileId << "\" ]";
@@ -1196,11 +1185,7 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
       bool firstChild=TRUE;
       t << indentStr << "  [ ";
       generateJSLink(t,n);
-      bool emptySection = true;
-      if (recurse) {
-        emptySection = !generateJSTree(navIndex,t,n->children,level+1,firstChild);
-      }
-      if (emptySection)
+      if (!generateJSTree(navIndex,t,n->children,level+1,firstChild))
         t << "null ]";
       else
         t << endl << indentStr << "  ] ]"; 
