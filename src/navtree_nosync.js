@@ -221,12 +221,8 @@ function expandNode(o, node, imm, showRoot)
     } else {
       if (!node.childrenVisited) {
         getNode(o, node);
-      } if (imm || ($.browser.msie && $.browser.version>8)) { 
-        // somehow slideDown jumps to the start of tree for IE9 :-(
-        $(node.getChildrenUL()).show();
-      } else {
-        $(node.getChildrenUL()).slideDown("fast");
       }
+      $(node.getChildrenUL()).show();
       if (node.isLast) {
         node.plus_img.src = node.relpath+"ftv2mlastnode.png";
       } else {
@@ -414,10 +410,8 @@ function initNavTree(toroot,relpath)
   o.node.plus_img.width = 16;
   o.node.plus_img.height = 22;
 
-  $(window).load(function(){
-    navTo(o,toroot,window.location.hash,relpath);
-    showRoot();
-  });
+  navTo(o,toroot,window.location.hash,relpath);
+  showRoot();
 
   $(window).bind('hashchange', function(){
      if (window.location.hash && window.location.hash.length>1){
