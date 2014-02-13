@@ -1104,11 +1104,38 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
   for (nli.toFirst();(n=nli.current());++nli)
   {
     if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
+      bool shouldSkip = false;
       if (n->def) {
         // Skip anything that has a definition. We're only adding modules.
-        continue;
+        shouldSkip = true;
       }
       if (!n->anchor.isEmpty()) {
+        shouldSkip = true;
+      }
+
+      if (shouldSkip) {
+        if (n->addToNavIndex) // add entry to the navigation index
+        {
+          FTVNode* parent = n->parent;
+          if (n->def && n->def->definitionType()==Definition::TypeFile)
+          {
+            FileDef *fd = (FileDef*)n->def;
+            bool doc,src;
+            doc = fileVisibleInIndex(fd,src);
+            if (doc)
+            {
+              navIndex.append(new NavIndexEntry(node2URL(n,TRUE,FALSE),pathToNode(parent,parent)));
+            }
+            if (src)
+            {
+              navIndex.append(new NavIndexEntry(node2URL(n,TRUE,TRUE),pathToNode(parent,parent)));
+            }
+          }
+          else
+          {
+            navIndex.append(new NavIndexEntry(node2URL(n),pathToNode(parent,parent)));
+          }
+        }
         continue;
       }
     }
