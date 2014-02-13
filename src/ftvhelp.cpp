@@ -1106,26 +1106,30 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
     }
     found=TRUE;
 
-    if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES") && !n->anchor.isEmpty()) {
-      continue;
+    if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
+      if (n->def) {
+        // Skip anything that has a definition. We're only adding modules.
+        continue;
+      }
+      if (!n->anchor.isEmpty()) {
+        continue;
+      }
     }
     first=FALSE;
     if (n->addToNavIndex) // add entry to the navigation index
     {
       if (n->def && n->def->definitionType()==Definition::TypeFile)
       {
-        if (!Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
-          FileDef *fd = (FileDef*)n->def;
-          bool doc,src;
-          doc = fileVisibleInIndex(fd,src);
-          if (doc)
-          {
-            navIndex.append(new NavIndexEntry(node2URL(n,TRUE,FALSE),pathToNode(n,n)));
-          }
-          if (src)
-          {
-            navIndex.append(new NavIndexEntry(node2URL(n,TRUE,TRUE),pathToNode(n,n)));
-          }
+        FileDef *fd = (FileDef*)n->def;
+        bool doc,src;
+        doc = fileVisibleInIndex(fd,src);
+        if (doc)
+        {
+          navIndex.append(new NavIndexEntry(node2URL(n,TRUE,FALSE),pathToNode(n,n)));
+        }
+        if (src)
+        {
+          navIndex.append(new NavIndexEntry(node2URL(n,TRUE,TRUE),pathToNode(n,n)));
         }
       }
       else
@@ -1146,7 +1150,7 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
         FTVNode *n_child;
         hasChildren = false;
         for (nli_children.toFirst();(n_child=nli_children.current());++nli_children) {
-          if (n_child->anchor.isEmpty()) {
+          if (!n_child->def && n_child->anchor.isEmpty()) {
             hasChildren = true;
             break;
           }
