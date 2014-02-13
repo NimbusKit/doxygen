@@ -1213,7 +1213,7 @@ void ClassDef::writeInheritanceGraph(OutputList &ol)
     ol.disableAllBut(OutputGenerator::Man);
   }
 
-  if (m_impl->inherits && (count=m_impl->inherits->count())>0)
+  if (!Config_getBool("NIMBUSKIT_HIDE_INHERITANCE_DESCRIPTION") && m_impl->inherits && (count=m_impl->inherits->count())>0)
   {
     ol.startParagraph();
     //parseText(ol,theTranslator->trInherits()+" ");
