@@ -44,6 +44,10 @@ static const char navtree_script[]=
 #include "navtree.js.h"
 ;
 
+static const char navtree_nosync_script[]=
+#include "navtree_nosync.js.h"
+;
+
 static const char resize_script[]=
 #include "resize.js.h"
 ;
@@ -1107,16 +1111,18 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
     {
       if (n->def && n->def->definitionType()==Definition::TypeFile)
       {
-        FileDef *fd = (FileDef*)n->def;
-        bool doc,src;
-        doc = fileVisibleInIndex(fd,src);
-        if (doc)
-        {
-          navIndex.append(new NavIndexEntry(node2URL(n,TRUE,FALSE),pathToNode(n,n)));
-        }
-        if (src)
-        {
-          navIndex.append(new NavIndexEntry(node2URL(n,TRUE,TRUE),pathToNode(n,n)));
+        if (!Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
+          FileDef *fd = (FileDef*)n->def;
+          bool doc,src;
+          doc = fileVisibleInIndex(fd,src);
+          if (doc)
+          {
+            navIndex.append(new NavIndexEntry(node2URL(n,TRUE,FALSE),pathToNode(n,n)));
+          }
+          if (src)
+          {
+            navIndex.append(new NavIndexEntry(node2URL(n,TRUE,TRUE),pathToNode(n,n)));
+          }
         }
       }
       else
@@ -1281,9 +1287,13 @@ static void generateJSNavTree(const QList<FTVNode> &nodeList)
       tsidx << "};" << endl;
       t << endl << "];" << endl;
     }
-    t << endl << "var SYNCONMSG = '"  << theTranslator->trPanelSynchronisationTooltip(FALSE) << "';"; 
-    t << endl << "var SYNCOFFMSG = '" << theTranslator->trPanelSynchronisationTooltip(TRUE)  << "';"; 
-    t << endl << navtree_script;
+    if (!Config_getBool("NIMBUSKIT_HTML_DISABLENAVTREESYNC")) {
+      t << endl << "var SYNCONMSG = '"  << theTranslator->trPanelSynchronisationTooltip(FALSE) << "';"; 
+      t << endl << "var SYNCOFFMSG = '" << theTranslator->trPanelSynchronisationTooltip(TRUE)  << "';"; 
+      t << endl << navtree_script;
+    } else {
+      t << endl << navtree_nosync_script;
+    }
   }
 }
 
