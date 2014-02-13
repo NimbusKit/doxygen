@@ -3381,6 +3381,13 @@ will strip the prefix from any modules.
 ]]>
       </docs>
     </option>
+    <option type='string' id='NIMBUSKIT_NOLINK_CLASS' defval=''>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_NOLINK_CLASS tag is set then the provided class will never be linked.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

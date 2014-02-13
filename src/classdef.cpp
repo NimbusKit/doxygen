@@ -2608,6 +2608,10 @@ bool ClassDef::isLinkableInProject() const
 
 bool ClassDef::isLinkable() const
 {
+  QCString noLinkClass = Config_getString("NIMBUSKIT_NOLINK_CLASS");
+  if (className() == noLinkClass) {
+    return false;
+  }
   if (m_impl->templateMaster)
   {
     return m_impl->templateMaster->isLinkable();
