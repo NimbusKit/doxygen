@@ -1064,13 +1064,19 @@ static bool dupOfParent(const FTVNode *n)
 
 static void generateJSLink(FTextStream &t,FTVNode *n)
 {
+  QCString name = n->name;
+  QCString prefixToStrip = Config_getString("NIMBUSKIT_HTML_NAVTREESTRIPPREFIX");
+  if (prefixToStrip) {
+    prefixToStrip.prepend("^");
+    name.replace(QRegExp(prefixToStrip), "");
+  }
   if (n->file.isEmpty()) // no link
   {
-    t << "\"" << convertToJSString(n->name) << "\", null, ";
+    t << "\"" << convertToJSString(name) << "\", null, ";
   }
   else // link into other page
   {
-    t << "\"" << convertToJSString(n->name) << "\", \"";
+    t << "\"" << convertToJSString(name) << "\", \"";
     t << externalRef("",n->ref,TRUE);
     t << node2URL(n);
     t << "\", ";
