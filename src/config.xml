@@ -3383,6 +3383,14 @@ If the \c NIMBUSKIT_NOLINK_CLASS tag is set then the provided class will never b
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_USE_METHOD_NAME_FOR_ANCHOR' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_USE_METHOD_NAME_FOR_ANCHOR tag is set to \c YES then links will use the
+method name rather than an md5 hash.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
