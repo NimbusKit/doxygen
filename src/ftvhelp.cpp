@@ -1206,7 +1206,11 @@ static void generateJSNavTree(const QList<FTVNode> &nodeList)
     navIndex.append(new NavIndexEntry("pages"+Doxygen::htmlFileExtension,""));
 
     bool first=TRUE;
-    generateJSTree(navIndex,t,nodeList,1,first);
+    if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
+      generateJSTree(navIndex,t,nodeList.getFirst()->children,1,first);
+    } else {
+      generateJSTree(navIndex,t,nodeList,1,first);
+    }
 
     if (first) 
       t << "]" << endl;
