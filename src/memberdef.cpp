@@ -3286,31 +3286,35 @@ static QCString escapeAnchor(const QCString &anchor)
 
 void MemberDef::setAnchor()
 {
-  QCString memAnchor = name();
-  if (!m_impl->args.isEmpty()) memAnchor+=m_impl->args;
+  if (Config_getBool("NIMBUSKIT_USE_METHOD_NAME_FOR_ANCHOR")) {
+    m_impl->anc = name();
+  } else {
+    QCString memAnchor = name();
+    if (!m_impl->args.isEmpty()) memAnchor+=m_impl->args;
 
-  memAnchor.prepend(definition()); // actually the method name is now included
-            // twice, which is silly, but we keep it this way for backward
-            // compatibility.
+    memAnchor.prepend(definition()); // actually the method name is now included
+              // twice, which is silly, but we keep it this way for backward
+              // compatibility.
 
-  // include number of template arguments as well,
-  // to distinguish between two template
-  // specializations that only differ in the template parameters.
-  if (m_impl->tArgList)
-  {
-    char buf[20];
-    qsnprintf(buf,20,"%d:",m_impl->tArgList->count());
-    buf[19]='\0';
-    memAnchor.prepend(buf);
+    // include number of template arguments as well,
+    // to distinguish between two template
+    // specializations that only differ in the template parameters.
+    if (m_impl->tArgList)
+    {
+      char buf[20];
+      qsnprintf(buf,20,"%d:",m_impl->tArgList->count());
+      buf[19]='\0';
+      memAnchor.prepend(buf);
+    }
+
+    // convert to md5 hash
+    uchar md5_sig[16];
+    QCString sigStr(33);
+    MD5Buffer((const unsigned char *)memAnchor.data(),memAnchor.length(),md5_sig);
+    //printf("memAnchor=%s\n",memAnchor.data());
+    MD5SigToString(md5_sig,sigStr.data(),33);
+    m_impl->anc = "a"+sigStr;
   }
-
-  // convert to md5 hash
-  uchar md5_sig[16];
-  QCString sigStr(33);
-  MD5Buffer((const unsigned char *)memAnchor.data(),memAnchor.length(),md5_sig);
-  //printf("memAnchor=%s\n",memAnchor.data());
-  MD5SigToString(md5_sig,sigStr.data(),33);
-  m_impl->anc = "a"+sigStr;
 }
 
 void MemberDef::setGroupDef(GroupDef *gd,Grouping::GroupPri_t pri,
