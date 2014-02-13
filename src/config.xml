@@ -3391,6 +3391,14 @@ method name rather than an md5 hash.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_HIDE_INHERITANCE_DESCRIPTION' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_HIDE_INHERITANCE_DESCRIPTION tag is set to \c YES then the
+"inherits from" text will be hidden.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
