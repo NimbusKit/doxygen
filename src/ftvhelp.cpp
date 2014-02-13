@@ -1046,7 +1046,6 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
   {
     // terminate previous entry
     if (!first) t << "," << endl;
-    first=FALSE;
 
     // start entry
     if (!found)
@@ -1055,6 +1054,10 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
     }
     found=TRUE;
 
+    if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES") && !n->anchor.isEmpty()) {
+      continue;
+    }
+    first=FALSE;
     if (n->addToNavIndex) // add entry to the navigation index
     {
       if (n->def && n->def->definitionType()==Definition::TypeFile)
@@ -1084,8 +1087,22 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
       bool firstChild=TRUE;
       t << indentStr << "  [ ";
       generateJSLink(t,n);
-      if (n->children.count()>0) // write children to separate file for dynamic loading
+
+      bool hasChildren = n->children.count()>0;
+      if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
+        QListIterator<FTVNode> nli_children(n->children);
+        FTVNode *n_child;
+        hasChildren = false;
+        for (nli_children.toFirst();(n_child=nli_children.current());++nli_children) {
+          if (n_child->anchor.isEmpty()) {
+            hasChildren = true;
+            break;
+          }
+        }
+      }
+      if (hasChildren) // write children to separate file for dynamic loading
       {
+        // Check that at least one child isn't an anchor.
         QCString fileId = n->file;
         if (n->anchor)
         {
