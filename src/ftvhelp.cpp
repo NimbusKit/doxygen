@@ -48,6 +48,10 @@ static const char resize_script[]=
 #include "resize.js.h"
 ;
 
+static const char resize_fixed_script[]=
+#include "resize_fixed.js.h"
+;
+
 static const char navtree_css[]=
 #include "navtree.css.h"
 ;
@@ -1078,7 +1082,7 @@ static QCString convertFileId2Var(const QCString &fileId)
 }
 
 static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t, 
-                           const QList<FTVNode> &nl,int level,bool &first)
+                           const QList<FTVNode> &nl,int level,bool &first,bool recurse=true)
 {
   static QCString htmlOutput = Config_getString("HTML_OUTPUT");
   QCString indentStr;
@@ -1141,8 +1145,10 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
         if (f.open(IO_WriteOnly))
         {
           FTextStream tt(&f);
+          // NOTE: individual module .js files are generated here.
           tt << "var " << convertFileId2Var(fileId) << " =" << endl;
-          generateJSTree(navIndex,tt,n->children,1,firstChild);
+          bool shouldRecurse = !Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES");
+          generateJSTree(navIndex,tt,n->children,1,firstChild,shouldRecurse);
           tt << endl << "];"; 
         }
         t << "\"" << fileId << "\" ]";
@@ -1157,7 +1163,10 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
       bool firstChild=TRUE;
       t << indentStr << "  [ ";
       generateJSLink(t,n);
-      bool emptySection = !generateJSTree(navIndex,t,n->children,level+1,firstChild);
+      bool emptySection = true;
+      if (recurse) {
+        emptySection = !generateJSTree(navIndex,t,n->children,level+1,firstChild);
+      }
       if (emptySection)
         t << "null ]";
       else
@@ -1297,11 +1306,16 @@ void FTVHelp::generateTreeViewScripts()
 
   // generate resize.js
   {
+    QCString resizeJSFilename;
     QFile f(htmlOutput+"/resize.js");
     if (f.open(IO_WriteOnly))
     {
       FTextStream t(&f);
-      t << resize_script;
+      if (Config_getBool("NIMBUSKIT_HTML_FIXEDTREEVIEW")) {
+        t << resize_fixed_script;
+      } else {
+        t << resize_script;
+      }
     }
   }
   // generate navtree.css
