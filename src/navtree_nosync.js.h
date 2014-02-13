@@ -380,8 +380,6 @@
 "  }\n"
 "  var url=root+hash;\n"
 "  var i=-1;\n"
-"  console.log(url);\n"
-"  console.log(NAVTREEINDEX);\n"
 "  while (NAVTREEINDEX[i+1]<=url) i++;\n"
 "  if (i==-1) { i=0; root=NAVTREE[0][1]; } // fallback: show index\n"
 "  if (navTreeSubIndices[i]) {\n"
