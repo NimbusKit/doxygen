@@ -3464,6 +3464,14 @@ h5 titled Discussion.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_SANE_PREFIXES' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_SANE_PREFIXES tag is set to \c YES then the peculiar prefixes
+attached to all class names are removed.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
