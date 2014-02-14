@@ -2937,7 +2937,9 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
   _writeCategoryRelation(ol);
   _writeExamples(ol);
   _writeTypeConstraints(ol);
-  writeSourceDef(ol,cname);
+  if (!Config_getBool("NIMBUSKIT_HTML_DONT_SHOW_DEFS")) {
+    writeSourceDef(ol,cname);
+  }
   writeSourceRefs(ol,cname);
   writeSourceReffedBy(ol,cname);
   writeInlineCode(ol,cname);

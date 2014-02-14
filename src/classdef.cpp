@@ -999,7 +999,9 @@ void ClassDef::writeDetailedDocumentationBody(OutputList &ol)
     ol.endSimpleSect();
   }
   //ol.newParagraph();
-  writeSourceDef(ol,name());
+  if (!Config_getBool("NIMBUSKIT_HTML_DONT_SHOW_DEFS")) {
+    writeSourceDef(ol,name());
+  }
   ol.endTextBlock();
 }
 
