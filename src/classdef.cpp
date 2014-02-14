@@ -607,7 +607,11 @@ void ClassDef::internalInsertMember(MemberDef *md,
           addMemberToList(MemberListType_interfaceMembers,md,FALSE);
           break;
         case MemberType_Property:
-          addMemberToList(MemberListType_propertyMembers,md,FALSE);
+          if (Config_getBool("NIMBUSKIT_PROPERTIES_ARE_PUBLIC_METHODS")) {
+            addMemberToList(MemberListType_propertyMembers,md,FALSE);
+          } else {
+            addMemberToList(MemberListType_functionMembers,md,FALSE);
+          }
           break;
         case MemberType_Event:
           addMemberToList(MemberListType_eventMembers,md,FALSE);
