@@ -482,7 +482,7 @@ void ClassDef::internalInsertMember(MemberDef *md,
           }
           break;
         default: // any of the other members
-          if (md->isStatic())
+          if (md->isStatic() && !Config_getBool("NIMBUSKIT_GROUP_STATIC_AND_INSTANCE_METHODS"))
           {
             if (md->isVariable())
             {

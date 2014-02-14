@@ -3415,6 +3415,14 @@ will show the word "properties" after them in the method declarations.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_GROUP_STATIC_AND_INSTANCE_METHODS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_GROUP_STATIC_AND_INSTANCE_METHODS tag is set to \c YES then
+static methods will be listed alongside instance methods.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
