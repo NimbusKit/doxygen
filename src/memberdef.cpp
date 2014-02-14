@@ -1935,86 +1935,89 @@ void MemberDef::getLabels(QStrList &sl,Definition *container) const
     //ol.writeLatexSpacing();
     //ol.startTypewriter();
     //ol.docify(" [");
-    SrcLangExt lang = getLanguage();
-    bool optVhdl = lang==SrcLangExt_VHDL;
-    if (optVhdl)
-    {
-      sl.append(VhdlDocGen::trTypeString(getMemberSpecifiers()));
-    }
-    else
-    {
-      if (isFriend()) sl.append("friend");
-      else if (isRelated()) sl.append("related");
+
+    if (!Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+      SrcLangExt lang = getLanguage();
+      bool optVhdl = lang==SrcLangExt_VHDL;
+      if (optVhdl)
+      {
+        sl.append(VhdlDocGen::trTypeString(getMemberSpecifiers()));
+      }
       else
       {
-        if      (Config_getBool("INLINE_INFO") && isInline()) sl.append("inline");
-        if      (isExplicit())            sl.append("explicit");
-        if      (isMutable())             sl.append("mutable");
-        if      (isStatic())              sl.append("static");
-        if      (isGettable())            sl.append("get");
-        if      (isSettable())            sl.append("set");
-        if      (isAddable())             sl.append("add");
-        if      (!isUNOProperty() && isRemovable()) sl.append("remove");
-        if      (isRaisable())            sl.append("raise");
-        if      (isReadable())            sl.append("read");
-        if      (isWritable())            sl.append("write");
-        if      (isFinal())               sl.append("final");
-        if      (isAbstract())            sl.append("abstract");
-        if      (isOverride())            sl.append("override");
-        if      (isInitonly())            sl.append("initonly");
-        if      (isSealed())              sl.append("sealed");
-        if      (isNew())                 sl.append("new");
-        if      (isOptional())            sl.append("optional");
-        if      (isRequired())            sl.append("required");
-
-        if      (isNonAtomic())           sl.append("nonatomic");
-        else if (isObjCProperty())        sl.append("atomic");
-
-        // mutual exclusive Objective 2.0 property attributes
-        if      (isAssign())              sl.append("assign");
-        else if (isCopy())                sl.append("copy");
-        else if (isRetain())              sl.append("retain");
-        else if (isWeak())                sl.append("weak");
-        else if (isStrong())              sl.append("strong");
-        else if (isUnretained())          sl.append("unsafe_unretained");
-
-        if (!isObjCMethod())
+        if (isFriend()) sl.append("friend");
+        else if (isRelated()) sl.append("related");
+        else
         {
-          if      (protection()==Protected) sl.append("protected");
-          else if (protection()==Private)   sl.append("private");
-          else if (protection()==Package)   sl.append("package");
+          if      (Config_getBool("INLINE_INFO") && isInline()) sl.append("inline");
+          if      (isExplicit())            sl.append("explicit");
+          if      (isMutable())             sl.append("mutable");
+          if      (isStatic())              sl.append("static");
+          if      (isGettable())            sl.append("get");
+          if      (isSettable())            sl.append("set");
+          if      (isAddable())             sl.append("add");
+          if      (!isUNOProperty() && isRemovable()) sl.append("remove");
+          if      (isRaisable())            sl.append("raise");
+          if      (isReadable())            sl.append("read");
+          if      (isWritable())            sl.append("write");
+          if      (isFinal())               sl.append("final");
+          if      (isAbstract())            sl.append("abstract");
+          if      (isOverride())            sl.append("override");
+          if      (isInitonly())            sl.append("initonly");
+          if      (isSealed())              sl.append("sealed");
+          if      (isNew())                 sl.append("new");
+          if      (isOptional())            sl.append("optional");
+          if      (isRequired())            sl.append("required");
 
-          if      (lvirt==Virtual)          sl.append("virtual");
-          else if (lvirt==Pure)             sl.append("pure virtual");
-          if      (isSignal())              sl.append("signal");
-          if      (isSlot())                sl.append("slot");
-          if      (isDefault())             sl.append("default");
-          if      (isDelete())              sl.append("delete");
-          if      (isNoExcept())            sl.append("noexcept");
-          if      (isAttribute())           sl.append("attribute");
-          if      (isUNOProperty())         sl.append("property");
-          if      (isReadonly())            sl.append("readonly");
-          if      (isBound())               sl.append("bound");
-          if      (isUNOProperty() && isRemovable()) sl.append("removable");
-          if      (isConstrained())         sl.append("constrained");
-          if      (isTransient())           sl.append("transient");
-          if      (isMaybeVoid())           sl.append("maybevoid");
-          if      (isMaybeDefault())        sl.append("maybedefault");
-          if      (isMaybeAmbiguous())      sl.append("maybeambiguous");
-          if      (isPublished())           sl.append("published"); // enum
+          if      (isNonAtomic())           sl.append("nonatomic");
+          else if (isObjCProperty())        sl.append("atomic");
+
+          // mutual exclusive Objective 2.0 property attributes
+          if      (isAssign())              sl.append("assign");
+          else if (isCopy())                sl.append("copy");
+          else if (isRetain())              sl.append("retain");
+          else if (isWeak())                sl.append("weak");
+          else if (isStrong())              sl.append("strong");
+          else if (isUnretained())          sl.append("unsafe_unretained");
+
+          if (!isObjCMethod())
+          {
+            if      (protection()==Protected) sl.append("protected");
+            else if (protection()==Private)   sl.append("private");
+            else if (protection()==Package)   sl.append("package");
+
+            if      (lvirt==Virtual)          sl.append("virtual");
+            else if (lvirt==Pure)             sl.append("pure virtual");
+            if      (isSignal())              sl.append("signal");
+            if      (isSlot())                sl.append("slot");
+            if      (isDefault())             sl.append("default");
+            if      (isDelete())              sl.append("delete");
+            if      (isNoExcept())            sl.append("noexcept");
+            if      (isAttribute())           sl.append("attribute");
+            if      (isUNOProperty())         sl.append("property");
+            if      (isReadonly())            sl.append("readonly");
+            if      (isBound())               sl.append("bound");
+            if      (isUNOProperty() && isRemovable()) sl.append("removable");
+            if      (isConstrained())         sl.append("constrained");
+            if      (isTransient())           sl.append("transient");
+            if      (isMaybeVoid())           sl.append("maybevoid");
+            if      (isMaybeDefault())        sl.append("maybedefault");
+            if      (isMaybeAmbiguous())      sl.append("maybeambiguous");
+            if      (isPublished())           sl.append("published"); // enum
+          }
+          if (isObjCProperty() && isImplementation())
+          {
+            sl.append("implementation");
+          }
         }
-        if (isObjCProperty() && isImplementation())
+        if (m_impl->classDef &&
+            container->definitionType()==TypeClass &&
+            m_impl->classDef!=container &&
+            !isRelated()
+           )
         {
-          sl.append("implementation");
+          sl.append("inherited");
         }
-      }
-      if (m_impl->classDef &&
-          container->definitionType()==TypeClass &&
-          m_impl->classDef!=container &&
-          !isRelated()
-         )
-      {
-        sl.append("inherited");
       }
     }
   }
@@ -2695,54 +2698,58 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
     }
 
     ol.startMemberDocName(isObjCMethod());
-    if (cd && cd->isObjectiveC())
-    {
-      // strip scope name
-      int ep = ldef.find("::");
-      if (ep!=-1)
+    if (Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+      ol.docify(objCMethodName(true, false).data());
+    } else {
+      if (cd && cd->isObjectiveC())
       {
-        int sp=ldef.findRev(' ',ep);
-        if (sp!=-1)
+        // strip scope name
+        int ep = ldef.find("::");
+        if (ep!=-1)
         {
-          ldef=ldef.left(sp+1)+ldef.mid(ep+2);
-        } else {
-          ldef=ldef.mid(ep+2);
+          int sp=ldef.findRev(' ',ep);
+          if (sp!=-1)
+          {
+            ldef=ldef.left(sp+1)+ldef.mid(ep+2);
+          } else {
+            ldef=ldef.mid(ep+2);
+          }
         }
+        // strip keywords
+        int dp = ldef.find(':');
+        if (dp!=-1)
+        {
+          ldef=ldef.left(dp+1);
+        }
+        int l=ldef.length();
+        //printf("start >%s<\n",ldef.data());
+        int i=l-1;
+        while (i>=0 && (isId(ldef.at(i)) || ldef.at(i)==':')) i--;
+        while (i>=0 && isspace((uchar)ldef.at(i))) i--;
+        if (i>0)
+        {
+          // insert braches around the type
+          QCString tmp("("+ldef.left(i+1)+")"+ldef.mid(i+1));
+          ldef=tmp;
+        }
+        //printf("end   >%s< i=%d\n",ldef.data(),i);
+        if (isStatic()) ldef.prepend("+ "); else ldef.prepend("- ");
       }
-      // strip keywords
-      int dp = ldef.find(':');
-      if (dp!=-1)
-      {
-        ldef=ldef.left(dp+1);
-      }
-      int l=ldef.length();
-      //printf("start >%s<\n",ldef.data());
-      int i=l-1;
-      while (i>=0 && (isId(ldef.at(i)) || ldef.at(i)==':')) i--;
-      while (i>=0 && isspace((uchar)ldef.at(i))) i--;
-      if (i>0)
-      {
-        // insert braches around the type
-        QCString tmp("("+ldef.left(i+1)+")"+ldef.mid(i+1));
-        ldef=tmp;
-      }
-      //printf("end   >%s< i=%d\n",ldef.data(),i);
-      if (isStatic()) ldef.prepend("+ "); else ldef.prepend("- ");
-    }
 
-    if (optVhdl)
-    {
-      hasParameterList=VhdlDocGen::writeVHDLTypeDocumentation(this,container,ol);
-    }
-    else
-    {
-      linkifyText(TextGeneratorOLImpl(ol),
-                  container,
-                  getBodyDef(),
-                  this,
-                  substitute(ldef,"::",sep)
-                 );
-      hasParameterList=writeDefArgumentList(ol,cd,scopeName,this);
+      if (optVhdl)
+      {
+        hasParameterList=VhdlDocGen::writeVHDLTypeDocumentation(this,container,ol);
+      }
+      else
+      {
+        linkifyText(TextGeneratorOLImpl(ol),
+                    container,
+                    getBodyDef(),
+                    this,
+                    substitute(ldef,"::",sep)
+                   );
+        hasParameterList=writeDefArgumentList(ol,cd,scopeName,this);
+      }
     }
 
     if (hasOneLineInitializer()) // add initializer
@@ -2815,7 +2822,9 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
     ol.writeString("  </tr>\n");
     ol.writeString("</table>\n");
   }
-  ol.writeString("</div>");
+  if (!Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+    ol.writeString("</div>");
+  }
   ol.popGeneratorState();
 
 

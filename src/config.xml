@@ -3452,6 +3452,14 @@ the definition line will never be displayed for classes and members.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_HTML_APPLE_METHOD_DECLS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_HTML_APPLE_METHOD_DECLS tag is set to \c YES then
+method declarations will resemble Apple's documentation.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
