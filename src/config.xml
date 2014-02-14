@@ -3423,6 +3423,14 @@ static methods will be listed alongside instance methods.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_DOCSET_DEFAULT_OBJC' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_DOCSET_DEFAULT_OBJC tag is set to \c YES then
+symbols outside of classes/namespaces will be noted as Objective-C, rather than C.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

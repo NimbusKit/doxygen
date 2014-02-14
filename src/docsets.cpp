@@ -315,8 +315,13 @@ void DocSets::addIndexItem(Definition *context,MemberDef *md,
           lang="occ";  // Objective C/C++
         else if (fd && fd->name().right(2).lower()==".c") 
           lang="c";    // Plain C
-        else if (cd==0 && nd==0)
-          lang="c";    // Plain C symbol outside any class or namespace
+        else if (cd==0 && nd==0) {
+          if (Config_getBool("NIMBUSKIT_DOCSET_DEFAULT_OBJC")) {
+            lang="occ";
+          } else {
+            lang="c";    // Plain C symbol outside any class or namespace
+          }
+        }
         else
           lang="cpp";  // C++
       }
