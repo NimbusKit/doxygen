@@ -1851,9 +1851,13 @@ void HtmlGenerator::endDoxyAnchor(const char *,const char *)
 //  t << endl << "<p>" << endl;
 //}
 
-void HtmlGenerator::startParagraph()
+void HtmlGenerator::startParagraph(const char *className)
 {
-  t << endl << "<p>";
+  if (className) {
+    t << endl << "<p class=\"" << className << "\">";
+  } else {
+    t << endl << "<p>";
+  }
 }
 
 void HtmlGenerator::endParagraph()
@@ -2565,6 +2569,11 @@ void HtmlGenerator::endMemberDoc(bool hasArgs)
     t << "      </table>" << endl;
 //    t << "</div>" << endl;
   }
+}
+
+void HtmlGenerator::startDetailedDescription()
+{
+  t << "<h5>Discussion</h5>" << endl;
 }
 
 void HtmlGenerator::startDotGraph()

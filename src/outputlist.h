@@ -112,8 +112,8 @@ class OutputList : public OutputDocInterface
     { forall(&OutputGenerator::endTitle); }
     //void newParagraph() 
     //{ forall(&OutputGenerator::newParagraph); }
-    void startParagraph() 
-    { forall(&OutputGenerator::startParagraph); }
+    void startParagraph(const char *className = 0) 
+    { forall(&OutputGenerator::startParagraph, className); }
     void endParagraph() 
     { forall(&OutputGenerator::endParagraph); }
     void writeString(const char *text) 
@@ -313,6 +313,8 @@ class OutputList : public OutputDocInterface
     { forall(&OutputGenerator::startMemberDeclaration); }
     void endMemberDeclaration(const char *anchor,const char *inheritId)
     { forall(&OutputGenerator::endMemberDeclaration,anchor,inheritId); }
+    void startDetailedDescription() 
+    { forall(&OutputGenerator::startDetailedDescription); }
     void writeInheritedSectionTitle(const char *id,   const char *ref,
                                     const char *file, const char *anchor,
                                     const char *title,const char *name)

@@ -3455,6 +3455,15 @@ method declarations will resemble Apple's documentation.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_DISCUSSION_AND_BRIEF' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_DISCUSSION_AND_BRIEF tag is set to \c YES then
+the first paragraph tag has the class "abstract" and the description is prefixed by an
+h5 titled Discussion.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
