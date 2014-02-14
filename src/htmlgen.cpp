@@ -2421,7 +2421,9 @@ void HtmlGenerator::startMemberDoc(const char *,const char *,const char *,const 
   DBG_HTML(t << "<!-- startMemberDoc -->" << endl;)
  
   t << "\n<div class=\"memitem\">" << endl;
-  t << "<div class=\"memproto\">" << endl;
+  if (!Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+    t << "<div class=\"memproto\">" << endl;
+  }
 }
 
 void HtmlGenerator::startMemberDocPrefixItem()
@@ -2440,16 +2442,24 @@ void HtmlGenerator::startMemberDocName(bool /*align*/)
 {
   DBG_HTML(t << "<!-- startMemberDocName -->" << endl;)
 
-  t << "      <table class=\"memname\">" << endl;
-    
-  t << "        <tr>" << endl;
-  t << "          <td class=\"memname\">";
+  if (!Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+    t << "      <table class=\"memname\">" << endl;
+      
+    t << "        <tr>" << endl;
+    t << "          <td class=\"memname\">";
+  } else {
+    t << "      <h3 class=\"memname\">";
+  }
 }
 
 void HtmlGenerator::endMemberDocName()
 {
   DBG_HTML(t << "<!-- endMemberDocName -->" << endl;)
-  t << "</td>" << endl;
+  if (!Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+    t << "</td>" << endl;
+  } else {
+    t << "</h3>" << endl;
+  }
 }
 
 void HtmlGenerator::startParameterList(bool openBracket)
@@ -2547,12 +2557,14 @@ void HtmlGenerator::exceptionEntry(const char* prefix,bool closeBracket)
 void HtmlGenerator::endMemberDoc(bool hasArgs)     
 { 
   DBG_HTML(t << "<!-- endMemberDoc -->" << endl;)
-  if (!hasArgs)
-  {
-    t << "        </tr>" << endl;
+  if (!Config_getBool("NIMBUSKIT_HTML_APPLE_METHOD_DECLS")) {
+    if (!hasArgs)
+    {
+      t << "        </tr>" << endl;
+    }
+    t << "      </table>" << endl;
+//    t << "</div>" << endl;
   }
-  t << "      </table>" << endl;
- // t << "</div>" << endl;
 }
 
 void HtmlGenerator::startDotGraph()
