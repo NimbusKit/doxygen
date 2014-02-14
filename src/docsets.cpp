@@ -55,6 +55,7 @@ void DocSets::initialize()
   if (publisherName.isEmpty()) publisherName="PublisherName";
   QCString projectNumber = Config_getString("PROJECT_NUMBER");
   if (projectNumber.isEmpty()) projectNumber="ProjectNumber";
+  QCString docsetFeedUrl = Config_getString("NIMBUSKIT_DOCSET_FEED_URL");
 
   // -- write Makefile
   {
@@ -129,6 +130,8 @@ void DocSets::initialize()
         "     <string>" << bundleId << "</string>\n" 
         "     <key>CFBundleVersion</key>\n"
         "     <string>" << projectNumber << "</string>\n"
+        "     <key>DocSetFeedURL</key>\n"
+        "     <string>" << docsetFeedUrl << "</string>\n"
         "     <key>DocSetFeedName</key>\n" 
         "     <string>" << feedName << "</string>\n"
         "     <key>DocSetPublisherIdentifier</key>\n"
