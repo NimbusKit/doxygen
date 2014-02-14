@@ -1783,6 +1783,7 @@ void MemberDef::writeDeclaration(OutputList &ol,
   // write brief description
   if (!briefDescription().isEmpty() &&
       Config_getBool("BRIEF_MEMBER_DESC")
+      && !Config_getBool("NIMBUSKIT_NO_MEMBER_BRIEF")
       /* && !annMemb */
      )
   {
