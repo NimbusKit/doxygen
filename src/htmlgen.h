@@ -140,7 +140,7 @@ class HtmlGenerator : public OutputGenerator
     void startTitle() { t << "<div class=\"title\">"; }
     void endTitle() { t << "</div>"; }
     
-    void startParagraph();
+    void startParagraph(const char *className = 0);
     void endParagraph();
     void writeString(const char *text);
     void startIndexListItem();
@@ -202,6 +202,7 @@ class HtmlGenerator : public OutputGenerator
     void insertMemberAlign(bool);
     void startMemberDescription(const char *anchor,const char *inheritId);
     void endMemberDescription();
+    void startDetailedDescription();
     void startMemberDeclaration() {}
     void endMemberDeclaration(const char *anchor,const char *inheritId);
     void writeInheritedSectionTitle(const char *id,   const char *ref,

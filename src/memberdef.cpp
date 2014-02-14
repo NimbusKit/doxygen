@@ -2872,7 +2872,11 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
       )
      )
   {
-    ol.startParagraph();
+    if (Config_getBool("NIMBUSKIT_DISCUSSION_AND_BRIEF")) {
+      ol.startParagraph("abstract");
+    } else {
+      ol.startParagraph();
+    }
     ol.generateDoc(briefFile(),briefLine(),
                 getOuterScope()?getOuterScope():container,this,
                 brief,FALSE,FALSE,0,TRUE,FALSE);
@@ -2883,6 +2887,9 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
   if (!detailed.isEmpty() ||
       !inbodyDocumentation().isEmpty())
   {
+    if (Config_getBool("NIMBUSKIT_DISCUSSION_AND_BRIEF")) {
+      ol.startDetailedDescription();
+    }
     // write vhdl inline code with or without option INLINE_SOURCE
     if (optVhdl && VhdlDocGen::isMisc(this))
     {

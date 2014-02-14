@@ -188,7 +188,7 @@ class BaseOutputDocInterface : public CodeOutputInterface
     //virtual void newParagraph()   = 0;
 
     /*! Starts a new paragraph */
-    virtual void startParagraph() = 0;
+    virtual void startParagraph(const char *className = 0) = 0;
     /*! Ends a paragraph */
     virtual void endParagraph() = 0;
 
@@ -416,6 +416,7 @@ class OutputGenerator : public BaseOutputDocInterface
     virtual void endMemberDescription() = 0;
     virtual void startMemberDeclaration() = 0;
     virtual void endMemberDeclaration(const char *anchor,const char *inheritId) = 0;
+    virtual void startDetailedDescription() = 0;
     virtual void writeInheritedSectionTitle(const char *id,const char *ref,
                                             const char *file,const char *anchor,
                                             const char *title,const char *name) = 0;

@@ -62,7 +62,7 @@ class ManGenerator : public OutputGenerator
     void endTitle();
     
     void newParagraph();
-    void startParagraph();
+    void startParagraph(const char *className = 0);
     void endParagraph();
     void writeString(const char *text);
     void startIndexListItem() {}
@@ -164,6 +164,7 @@ class ManGenerator : public OutputGenerator
     void endMemberDescription()   { t << "\\fP\""; firstCol=FALSE; }
     void startMemberDeclaration() {} 
     void endMemberDeclaration(const char *,const char *) {}
+    void startDetailedDescription() {}
     void writeInheritedSectionTitle(const char *,const char *,const char *,
                       const char *,const char *,const char *) {}
     void startDescList(SectionTypes);

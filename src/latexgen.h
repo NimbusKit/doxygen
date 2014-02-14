@@ -65,7 +65,7 @@ class LatexGenerator : public OutputGenerator
     void endTitle()   { t << "}"; }
 
     void newParagraph();
-    void startParagraph();
+    void startParagraph(const char *text = 0);
     void endParagraph();
     void writeString(const char *text);
     void startIndexListItem() {}
@@ -168,6 +168,7 @@ class LatexGenerator : public OutputGenerator
     void endMemberDescription();
     void startMemberDeclaration() {} 
     void endMemberDeclaration(const char *,const char *) {}
+    void startDetailedDescription() {}
     void writeInheritedSectionTitle(const char *,const char *,const char *,
                       const char *,const char *,const char *) {}
     void startDescList(SectionTypes)     { t << "\\begin{Desc}\n\\item["; }
