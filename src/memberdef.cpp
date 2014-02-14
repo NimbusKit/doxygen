@@ -1624,6 +1624,9 @@ void MemberDef::writeDeclaration(OutputList &ol,
         if (isReference() && m_impl->classDef) rcd = m_impl->classDef;
         writeLink(ol,rcd,nd,fd,gd);
       }
+      if (Config_getBool("NIMBUSKIT_PROPERTIES_SUFFIX") && isObjCProperty()) {
+        ol.writeString(" <span class=\"suffix\">property</span>");
+      }
     }
     else if (isDocumentedFriendClass())
       // if the member is an undocumented friend declaration for some class,
