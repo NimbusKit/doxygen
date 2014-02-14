@@ -179,6 +179,9 @@ class MemberDef : public Definition
     bool hasDocumentation() const;  // overrides hasDocumentation in definition.h
     //bool hasUserDocumentation() const; // overrides hasUserDocumentation
     bool isBriefSectionVisible() const;
+    void writeOriginalDeclaration(OutputList &ol,
+               ClassDef *cd,NamespaceDef *nd,FileDef *fd,GroupDef *gd,
+               bool inGroup, Definition *container);
     bool isDetailedSectionVisible(bool inGroup,bool inFile) const;
     bool isDetailedSectionLinkable() const;
     bool isFriendClass() const;

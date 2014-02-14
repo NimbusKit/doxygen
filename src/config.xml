@@ -3477,6 +3477,14 @@ attached to all class names are removed.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_ORIGINAL_DECLARATIONS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_ORIGINAL_DECLARATIONS tag is set to \c YES then the original
+declarations will be written out with the method description.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <qglobal.h>
 #include <qregexp.h>
+#include <qstringlist.h>
 #include <assert.h>
 #include "md5.h"
 #include "memberdef.h"
@@ -1829,6 +1830,134 @@ void MemberDef::writeDeclaration(OutputList &ol,
   warnIfUndocumented();
 }
 
+void MemberDef::writeOriginalDeclaration(OutputList &ol,
+               ClassDef *cd,NamespaceDef *nd,FileDef *fd,GroupDef *gd,
+               bool inGroup, Definition *container)
+{
+  //printf("%s MemberDef::writeOriginalDeclaration() inGroup=%d\n",name().data(),inGroup);
+
+  // hide enum value, since they appear already as part of the enum, unless they
+  // are explicitly grouped.
+  if (!inGroup && m_impl->mtype==MemberType_EnumValue) return;
+
+  Definition *d=0;
+  ASSERT (cd!=0 || nd!=0 || fd!=0 || gd!=0); // member should belong to something
+  if (cd) d=cd; else if (nd) d=nd; else if (fd) d=fd; else d=gd;
+
+  QCString cname  = d->name();
+  QCString cfname = getOutputFileBase();
+
+  // Write the @property declaration.
+  if (m_impl->mtype == MemberType_Property) {
+    ol.docify("@property (");
+    QStrList sl;
+    if      (isNonAtomic())                 sl.append("nonatomic");
+    if      (isReadable() && !isWritable()) sl.append("readonly");
+    if      (isStrong())                    sl.append("strong");
+    else if (isWeak())                      sl.append("weak");
+    else if (isCopy())                      sl.append("copy");
+    else if (isRetain())                    sl.append("retain");
+    const char *s=sl.first();
+    while (s)
+    {
+      ol.docify(s);
+      s=sl.next();
+      if (s) ol.docify(", ");
+    }
+    ol.docify(") ");
+  } else {
+    if (isObjCMethod())
+    {
+      if (isStatic()) ol.docify("+ "); else ol.docify("- ");
+    }
+  }
+
+  // *** write type
+  QCString ltype(m_impl->type);
+  if (m_impl->mtype==MemberType_Typedef) ltype.prepend("typedef ");
+  // strip `friend' keyword from ltype
+  ltype.stripPrefix("friend ");
+  static QRegExp r("@[0-9]+");
+  ltype.replace(QRegExp(" \\*"), "*");
+  ltype.replace(QRegExp("< "), "<");
+  ltype.replace(QRegExp(" >"), ">");
+
+  bool endAnonScopeNeeded=FALSE;
+  if (isObjCMethod())
+  {
+    ltype.prepend("(");
+    ltype.append(")");
+  }
+  linkifyText(TextGeneratorOLImpl(ol),container,getBodyDef(),this,ltype);
+  
+  // The space betwen the <type> * and the name.
+  if (!isObjCMethod()) {
+    if (!ltype.isEmpty()) ol.docify(" ");
+  }
+
+  // *** write name
+  ClassDef *rcd = cd;
+  if (isReference() && m_impl->classDef) rcd = m_impl->classDef; 
+
+  QCString n = name();
+  QCString doxyArgs = argsString();
+
+  // Remove the surrounding brackets
+  doxyArgs.stripPrefix("(");
+  doxyArgs = doxyArgs.left(doxyArgs.length() - 1);
+
+  QStringList args = QStringList::split(QString(":"), n, FALSE);
+  QStringList params = QStringList::split(QString(","), doxyArgs, FALSE);
+  if (args.count() != params.count()) {
+    ol.docify(n);
+
+  } else {
+    for (unsigned int ix = 0; ix < args.count(); ++ix) {
+      QString arg = (QString)(args[ix]);
+      QString param = (QString)(params[ix]);
+      ol.docify(arg.data());
+      ol.docify(":");
+
+      param.replace(QRegExp(" \\*"), " * ");
+      param.replace(QRegExp("\\[.+\\] "), "");
+      param.replace(QRegExp("__NI_DEPRECATED_METHOD"), "");
+      param.replace(QRegExp("< "), "<");
+      param.replace(QRegExp(" >"), ">");
+      param = param.stripWhiteSpace();
+      
+      QStringList paramParts = QStringList::split(QString(" "), param, FALSE);
+      if (paramParts.count() > 1) {
+        ol.docify("(");
+        for (unsigned int iy = 0; iy < paramParts.count() - 1; ++iy) {
+          linkifyText(TextGeneratorOLImpl(ol),container,getBodyDef(),this,paramParts[iy].data());
+          if (iy < paramParts.count() - 2) {
+            ol.docify(" ");
+          }
+        }
+        ol.docify(")");
+      }
+
+      // Parameter name
+      if (paramParts.count() > 1) {
+        ol.docify(paramParts.last().data());
+      }
+      if (ix < args.count() - 1) {
+        ol.docify(" ");
+      }
+     }
+   }
+   
+   ol.docify(";");
+
+  //printf("endMember %s annoClassDef=%p annEnumType=%p\n",
+  //    name().data(),annoClassDef,annEnumType);
+  ol.endMemberItem();
+  if (endAnonScopeNeeded) 
+  {
+    ol.endAnonTypeScope(--s_indentLevel);
+  }
+}
+
 bool MemberDef::isDetailedSectionLinkable() const
 {
   static bool extractAll        = Config_getBool("EXTRACT_ALL");
@@ -2881,6 +3010,12 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
                 getOuterScope()?getOuterScope():container,this,
                 brief,FALSE,FALSE,0,TRUE,FALSE);
     ol.endParagraph();
+
+    if (Config_getBool("NIMBUSKIT_ORIGINAL_DECLARATIONS")) {
+      ol.startMemberOriginalDeclaration();
+      writeOriginalDeclaration(ol, m_impl->classDef, m_impl->nspace, m_impl->fileDef, m_impl->group, inGroup, container);
+      ol.endMemberOriginalDeclaration();
+    }
   }
 
   /* write detailed description */

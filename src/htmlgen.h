@@ -183,6 +183,8 @@ class HtmlGenerator : public OutputGenerator
     void endMemberDocList();
     void startMemberList();
     void endMemberList();
+    void startMemberOriginalDeclaration();
+    void endMemberOriginalDeclaration();
     void startInlineHeader();
     void endInlineHeader();
     void startAnonTypeScope(int) {}
