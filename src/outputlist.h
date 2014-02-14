@@ -207,6 +207,10 @@ class OutputList : public OutputDocInterface
     { forall(&OutputGenerator::startMemberList); }
     void endMemberList() 
     { forall(&OutputGenerator::endMemberList); }
+    void startMemberOriginalDeclaration()
+    { forall(&OutputGenerator::startMemberOriginalDeclaration); }
+    void endMemberOriginalDeclaration()
+    { forall(&OutputGenerator::endMemberOriginalDeclaration); }
     void startInlineHeader()
     { forall(&OutputGenerator::startInlineHeader); }
     void endInlineHeader()

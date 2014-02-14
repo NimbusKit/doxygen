@@ -2206,6 +2206,16 @@ void HtmlGenerator::endMemberList()
   //}
 }
 
+void HtmlGenerator::startMemberOriginalDeclaration()
+{
+  t << "<div class=\"declaration\">" << endl;
+}
+
+void HtmlGenerator::endMemberOriginalDeclaration()
+{
+  t << "</div>" << endl;
+}
+
 // anonymous type:
 //  0 = single column right aligned
 //  1 = double column left aligned
