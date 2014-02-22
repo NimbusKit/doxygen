@@ -3493,6 +3493,14 @@ a brief.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_SHOW_TYPEDEFS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_SHOW_TYPEDEFS tag is set to \c YES then typedefs will be shown
+properly.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

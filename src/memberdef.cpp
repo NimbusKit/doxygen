@@ -1596,6 +1596,10 @@ void MemberDef::writeDeclaration(OutputList &ol,
     ol.insertMemberAlign(m_impl->tArgList!=0);
   }
 
+  if (Config_getBool("NIMBUSKIT_SHOW_TYPEDEFS") && m_impl->mtype==MemberType_Typedef) {
+    ol.writeString(ltype);
+    ol.docify(" ");
+  }
   // *** write name
   if (!name().isEmpty() && name().at(0)!='@') // hide anonymous stuff
   {
@@ -1948,6 +1952,21 @@ void MemberDef::writeOriginalDeclaration(OutputList &ol,
      }
    }
    
+  if (Config_getBool("NIMBUSKIT_SHOW_TYPEDEFS") && m_impl->mtype==MemberType_Typedef && argsString() && !isObjCMethod())
+  {
+    if (!isDefine()) ol.writeString(" ");
+    linkifyText(TextGeneratorOLImpl(ol), // out
+                d,                       // scope
+                getBodyDef(),            // fileScope
+                this,                    // self
+                argsString(),            // text
+                m_impl->annMemb,         // autoBreak
+                TRUE,                    // external
+                FALSE,                   // keepSpaces
+                s_indentLevel
+               );
+  }
+
    ol.docify(";");
 
   //printf("endMember %s annoClassDef=%p annEnumType=%p\n",
