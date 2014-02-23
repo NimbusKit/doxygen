@@ -3501,6 +3501,14 @@ properly.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_HIDE_IMPLEMENTATION' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_HIDE_IMPLEMENTATION tag is set to \c YES then the [implementation]
+label will not be displayed.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

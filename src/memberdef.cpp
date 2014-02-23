@@ -1725,7 +1725,7 @@ void MemberDef::writeDeclaration(OutputList &ol,
   }
 
 
-  if ((isObjCMethod() || isObjCProperty()) && isImplementation())
+  if (!Config_getBool("NIMBUSKIT_HIDE_IMPLEMENTATION") && (isObjCMethod() || isObjCProperty()) && isImplementation())
   {
     ol.startTypewriter();
     ol.docify(" [implementation]");
@@ -2154,7 +2154,7 @@ void MemberDef::getLabels(QStrList &sl,Definition *container) const
             if      (isMaybeAmbiguous())      sl.append("maybeambiguous");
             if      (isPublished())           sl.append("published"); // enum
           }
-          if (isObjCProperty() && isImplementation())
+          if (!Config_getBool("NIMBUSKIT_HIDE_IMPLEMENTATION") && isObjCProperty() && isImplementation())
           {
             sl.append("implementation");
           }
@@ -2170,7 +2170,7 @@ void MemberDef::getLabels(QStrList &sl,Definition *container) const
       }
     }
   }
-  else if (isObjCMethod() && isImplementation())
+  else if (!Config_getBool("NIMBUSKIT_HIDE_IMPLEMENTATION") && isObjCMethod() && isImplementation())
   {
     sl.append("implementation");
   }
