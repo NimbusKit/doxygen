@@ -3509,6 +3509,14 @@ label will not be displayed.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_ALLOW_STATIC_LINKS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_ALLOW_STATIC_LINKS tag is set to \c YES then static class methods
+can be linked to.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
