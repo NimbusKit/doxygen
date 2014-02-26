@@ -6044,11 +6044,16 @@ static void findMember(EntryNav *rootNav,
             //printf("scopeName %s->%s\n",scopeName.data(),
             //       stripTemplateSpecifiersFromScope(scopeName,FALSE).data());
 
-            if (Config_getBool("NIMBUSKIT_ALLOW_STATIC_LINKS") && md->getLanguage()==SrcLangExt_ObjC && cd->name().contains("()")) {
-              // featherless: Not sure what the ramifications of this change are, but it allows
-              // Objective-C static class methods to be linked.
-              scopeName.append("()");
-              className.append("()");
+            if (Config_getBool("NIMBUSKIT_ALLOW_STATIC_LINKS") && md->getLanguage()==SrcLangExt_ObjC) {
+              if (cd->name().contains("()")) {
+                // featherless: Not sure what the ramifications of this change are, but it allows
+                // Objective-C static class methods to be linked.
+                scopeName.append("()");
+                className.append("()");
+              } else if (cd->name().contains("-p")) {
+                scopeName.append("-p");
+                className.append("-p");
+              }
             }
 
             ClassDef *tcd=findClassDefinition(fd,nd,scopeName);
