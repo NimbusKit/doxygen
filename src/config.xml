@@ -3517,6 +3517,14 @@ can be linked to.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_APPLE_DOC_STYLE_PARAMS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_APPLE_DOC_STYLE_PARAMS tag is set to \c YES then Apple-Doc-style params
+will be output.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

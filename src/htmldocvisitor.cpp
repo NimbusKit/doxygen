@@ -1053,7 +1053,11 @@ void HtmlDocVisitor::visitPre(DocSimpleSect *s)
 {
   if (m_hide) return;
   forceEndParagraph(s);
-  m_t << "<dl class=\"section " << s->typeString() << "\"><dt>";
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "<h5>";
+  } else {
+    m_t << "<dl class=\"section " << s->typeString() << "\"><dt>";
+  }
   switch(s->type())
   {
     case DocSimpleSect::See: 
@@ -1094,14 +1098,22 @@ void HtmlDocVisitor::visitPre(DocSimpleSect *s)
   // special case 1: user defined title
   if (s->type()!=DocSimpleSect::User && s->type()!=DocSimpleSect::Rcs)
   {
-    m_t << "</dt><dd>";
+    if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+      m_t << "</h5><p>" << endl;
+    } else {
+      m_t << "</dt><dd>";
+    }
   }
 }
 
 void HtmlDocVisitor::visitPost(DocSimpleSect *s)
 {
   if (m_hide) return;
-  m_t << "</dd></dl>\n";
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "</p>" << endl;
+  } else {
+    m_t << "</dd></dl>\n";
+  }
   forceStartParagraph(s);
 }
 
@@ -1595,18 +1607,28 @@ void HtmlDocVisitor::visitPre(DocParamSect *s)
     default:
       ASSERT(0);
   }
-  m_t << "<dl class=\"" << className << "\"><dt>";
-  m_t << heading;
-  m_t << "</dt><dd>" << endl;
-  m_t << "  <table class=\"" << className << "\">" << endl;
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "<h5>" << heading << "</h5>" << endl;
+    m_t << "<dl class=\"paramsection\">" << endl;
+  } else {
+    m_t << "<dl class=\"" << className << "\"><dt>";
+    m_t << heading;
+    m_t << "</dt><dd>" << endl;
+    m_t << "  <table class=\"" << className << "\">" << endl;
+  }
 }
 
 void HtmlDocVisitor::visitPost(DocParamSect *s)
 {
   if (m_hide) return;
-  m_t << "  </table>" << endl;
-  m_t << "  </dd>" << endl;
-  m_t << "</dl>" << endl;
+
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "</dl>" << endl;
+  } else {
+    m_t << "  </table>" << endl;
+    m_t << "  </dd>" << endl;
+    m_t << "</dl>" << endl;
+  }
   forceStartParagraph(s);
 }
 
@@ -1614,7 +1636,9 @@ void HtmlDocVisitor::visitPre(DocParamList *pl)
 {
   //printf("DocParamList::visitPre\n");
   if (m_hide) return;
-  m_t << "    <tr>";
+  if (!Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "    <tr>";
+  }
   DocParamSect *sect = 0;
   if (pl->parent()->kind()==DocNode::Kind_ParamSect)
   {
@@ -1662,7 +1686,11 @@ void HtmlDocVisitor::visitPre(DocParamList *pl)
     }
     m_t << "</td>";
   }
-  m_t << "<td class=\"paramname\">";
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << " <dt><em>";
+  } else {
+    m_t << "<td class=\"paramname\">";
+  }
   //QStrListIterator li(pl->parameters());
   //const char *s;
   QListIterator<DocNode> li(pl->parameters());
@@ -1680,14 +1708,22 @@ void HtmlDocVisitor::visitPre(DocParamList *pl)
       visit((DocLinkedWord*)param); 
     }
   }
-  m_t << "</td><td>";
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "</em></dt>" << endl << " <dd>" << endl;
+  } else {
+    m_t << "</td><td>";
+  }
 }
 
 void HtmlDocVisitor::visitPost(DocParamList *)
 {
   //printf("DocParamList::visitPost\n");
   if (m_hide) return;
-  m_t << "</td></tr>" << endl;
+  if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    m_t << "</dd>" << endl;
+  } else {
+    m_t << "</td></tr>" << endl;
+  }
 }
 
 void HtmlDocVisitor::visitPre(DocXRefItem *x)
