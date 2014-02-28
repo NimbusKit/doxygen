@@ -1944,7 +1944,13 @@ void HtmlGenerator::writeObjectLink(const char *ref,const char *f,
   if (f) t << f << Doxygen::htmlFileExtension;
   if (anchor) t << "#" << anchor;
   t << "\">";
+  if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
+    t << "<code>";
+  }
   docify(name);
+  if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
+    t << "</code>";
+  }
   t << "</a>";
 }
 

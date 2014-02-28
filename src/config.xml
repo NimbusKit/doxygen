@@ -3525,6 +3525,14 @@ will be output.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_LINKS_ARE_CODE' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_LINKS_ARE_CODE tag is set to \c YES then links will have the <code> tag
+added to them.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

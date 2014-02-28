@@ -1928,10 +1928,16 @@ void HtmlDocVisitor::startLink(const QCString &ref,const QCString &file,
   m_t << "\"";
   if (!tooltip.isEmpty()) m_t << " title=\"" << substitute(tooltip,"\"","&quot;") << "\"";
   m_t << ">";
+  if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
+    m_t << "<code>";
+  }
 }
 
 void HtmlDocVisitor::endLink()
 {
+  if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
+    m_t << "</code>";
+  }
   m_t << "</a>";
 }
 
