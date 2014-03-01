@@ -1775,7 +1775,11 @@ static int writeCodeBlock(GrowBuf &out,const char *data,int size,int refIndent)
 {
   int i=0,end;
   //printf("writeCodeBlock: data={%s}\n",QCString(data).left(size).data());
-  out.addStr("@verbatim\n");
+  if (Config_getBool("NIMBUSKIT_TREAT_MARKDOWN_INDENTS_AS_CODE")) {
+    out.addStr("@code\n");
+  } else {
+    out.addStr("@verbatim\n");
+  }
   int emptyLines=0;
   while (i<size)
   {
@@ -1809,7 +1813,11 @@ static int writeCodeBlock(GrowBuf &out,const char *data,int size,int refIndent)
       break;
     }
   }
-  out.addStr("@endverbatim\n"); 
+  if (Config_getBool("NIMBUSKIT_TREAT_MARKDOWN_INDENTS_AS_CODE")) {
+    out.addStr("@endcode\n");
+  } else {
+    out.addStr("@endverbatim\n");
+  }
   while (emptyLines>0) // write skipped empty lines
   {
     // add empty line

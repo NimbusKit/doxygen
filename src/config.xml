@@ -3528,6 +3528,22 @@ added to them.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_TREAT_MARKDOWN_FILES_AS_DOCS' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_TREAT_MARKDOWN_FILES_AS_DOCS tag is set to \c YES then .md and .markdown
+files will be treated as documentation.
+]]>
+      </docs>
+    </option>
+    <option type='bool' id='NIMBUSKIT_TREAT_MARKDOWN_INDENTS_AS_CODE' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_TREAT_MARKDOWN_INDENTS_AS_CODE tag is set to \c YES then four-space
+indents will be treated as code.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

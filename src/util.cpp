@@ -6809,8 +6809,8 @@ void initDefaultExtensionMapping()
   updateLanguageMapping(".tcl",      "tcl");
   updateLanguageMapping(".ucf",      "vhdl");
   updateLanguageMapping(".qsf",      "vhdl");
-  updateLanguageMapping(".md",       "md");
-  updateLanguageMapping(".markdown", "md");
+  //updateLanguageMapping(".md",       "md");
+  //updateLanguageMapping(".markdown", "md");
 
   //updateLanguageMapping(".xml",   "dbusxml");
 }
