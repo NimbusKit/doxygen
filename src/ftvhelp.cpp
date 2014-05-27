@@ -1053,10 +1053,6 @@ static bool generateJSTree(NavIndexEntryList &navIndex,FTextStream &t,
   {
     if (Config_getBool("NIMBUSKIT_HTML_ONLYSHOWMODULES")) {
       bool shouldSkip = false;
-      if (n->def) {
-        // Skip anything that has a definition. We're only adding modules.
-        shouldSkip = true;
-      }
       if (!n->anchor.isEmpty()) {
         shouldSkip = true;
       }
