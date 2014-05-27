@@ -4414,8 +4414,9 @@ int DocHtmlBlockQuote::parse()
   {
     par = new DocPara(this);
     if (isFirst) { par->markFirst(); isFirst=FALSE; }
-    m_children.append(par);
     retval=par->parse();
+    if (par->isEmpty()) continue;
+    m_children.append(par);
   }
   while (retval==TK_NEWPARA);
   if (par) par->markLast();
