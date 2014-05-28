@@ -1138,6 +1138,12 @@ void HtmlDocVisitor::visitPre(DocSimpleSect *s)
   if (m_hide) return;
   forceEndParagraph(s);
   if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
+    switch(s->type()) {
+      case DocSimpleSect::Attention:
+        m_t << "<div class=\"attention\">";
+        break;
+      default: break;
+    }
     m_t << "<h5>";
   } else {
     m_t << "<dl class=\"section " << s->typeString() << "\"><dt>";
@@ -1195,6 +1201,13 @@ void HtmlDocVisitor::visitPost(DocSimpleSect *s)
   if (m_hide) return;
   if (Config_getBool("NIMBUSKIT_APPLE_DOC_STYLE_PARAMS")) {
     m_t << "</p>" << endl;
+
+    switch(s->type()) {
+      case DocSimpleSect::Attention:
+        m_t << "</div>";
+        break;
+      default: break;
+    }
   } else {
     m_t << "</dd></dl>\n";
   }
