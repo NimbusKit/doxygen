@@ -2086,6 +2086,61 @@ void ClassDef::writeDocumentation(OutputList &ol)
   ol.parseText(pageTitle);
   addClassAttributes(ol);
   addGroupListToTitle(ol,this);
+
+  if (isObjectiveC() && baseClasses())
+  {
+    ol.pushGeneratorState();
+    ol.disableAllBut(OutputGenerator::Html);
+    ol.writeString("<table cellspacing=\"0\" class=\"specbox\"><tbody>");
+
+    bool hasProtocols = false;
+    {
+      BaseClassListIterator bcli(*baseClasses());
+      for ( ; bcli.current(); ++bcli)
+      {
+        ClassDef *ccd=bcli.current()->classDef;
+        // Protocols have a ccd->name() with -p suffix.
+        if (ccd->name().right(2)=="-p") {
+          hasProtocols = true;
+          break;
+        }
+      }
+    }
+
+    if (hasProtocols) {
+      ol.writeString("<tr><td scope=\"row\"><strong><span class=\"noWrap\">Conforms to</span></strong></td><td><div class=\"zSharedSpecBoxHeadList\">");
+      BaseClassListIterator bcli(*baseClasses());
+      for ( ; bcli.current(); ++bcli)
+      {
+        ClassDef *ccd=bcli.current()->classDef;
+        QCString name = ccd->name().left(ccd->name().length() - 2);
+        if (ccd->name().right(2)=="-p") {
+          ol.writeString("<span class=\"content_text\">");
+
+          if (ccd->isLinkable())
+          {
+            ol.writeObjectLink(
+                ccd->getReference(),
+                ccd->getOutputFileBase(),
+                ccd->anchor(),
+                name);
+          }
+          else
+          {
+            ol.docify(name);
+          }
+
+          ol.writeString("</span><br/>");
+          printf("isBaseClass() baseclass %s\n",ccd->name().data());
+        }
+      }
+      ol.writeString("</div></td></tr>");
+    }
+
+    ol.writeString("</tbody></table>");
+    ol.popGeneratorState();
+  }
+
   endTitle(ol,getOutputFileBase(),displayName());
   writeDocumentationContents(ol,pageTitle);
 
