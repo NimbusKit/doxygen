@@ -404,7 +404,7 @@ void MemberList::writePlainDeclarations(OutputList &ol,
                 {
                   ol.startMemberDescription(md->anchor());
                   ol.writeDoc(rootNode,cd,md);
-                  if (md->isDetailedSectionLinkable())
+                  if (!Config_getBool("NIMBUSKIT_DISABLE_MORE_LINK") && md->isDetailedSectionLinkable())
                   {
                     ol.disableAllBut(OutputGenerator::Html);
                     ol.docify(" ");

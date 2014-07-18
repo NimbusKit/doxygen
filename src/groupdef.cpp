@@ -615,8 +615,9 @@ void GroupDef::writeBriefDescription(OutputList &ol)
       ol.writeString(" \n");
       ol.enable(OutputGenerator::RTF);
 
-      if (Config_getBool("REPEAT_BRIEF") ||
-          !documentation().isEmpty()
+      if (!Config_getBool("NIMBUSKIT_DISABLE_MORE_LINK") &&
+        (Config_getBool("REPEAT_BRIEF") ||
+          !documentation().isEmpty())
          )
       {
         ol.disableAllBut(OutputGenerator::Html);
