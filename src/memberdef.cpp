@@ -3940,7 +3940,7 @@ void MemberDef::writeEnumDeclaration(OutputList &typeDecl,
   }
 
   uint enumValuesPerLine = (uint)Config_getInt("ENUM_VALUES_PER_LINE");
-  if (numVisibleEnumValues>0 && enumValuesPerLine>0)
+  if (!Config_getBool("NIMBUSKIT_NO_ENUM_WRITEOUT") && numVisibleEnumValues>0 && enumValuesPerLine>0)
   {
     typeDecl.docify("{ ");
     if (fmdl)
