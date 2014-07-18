@@ -947,7 +947,7 @@ void ClassDef::writeBriefDescription(OutputList &ol,bool exampleFlag)
     ol.enable(OutputGenerator::RTF);
     ol.popGeneratorState();
 
-    if (hasDetailedDescription() || exampleFlag)
+    if (!Config_getBool("NIMBUSKIT_DISABLE_MORE_LINK") && (hasDetailedDescription() || exampleFlag))
     {
       writeMoreLink(ol,anchor());
     }
@@ -1861,7 +1861,7 @@ void ClassDef::writeDeclarationLink(OutputList &ol,bool &found,const char *heade
       {
         ol.startMemberDescription(anchor());
         ol.writeDoc(rootNode,this,0);
-        if (isLinkableInProject())
+        if (!Config_getBool("NIMBUSKIT_DISABLE_MORE_LINK") && isLinkableInProject())
         {
           writeMoreLink(ol,anchor());
         }
