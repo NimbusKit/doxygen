@@ -2699,6 +2699,11 @@ bool ClassDef::isLinkableInProject() const
   }
 }
 
+bool ClassDef::isLinkableFromExternalMap() const
+{
+  return false;
+}
+
 bool ClassDef::isLinkable() const
 {
   QCString noLinkClass = Config_getString("NIMBUSKIT_NOLINK_CLASS");
@@ -2711,7 +2716,13 @@ bool ClassDef::isLinkable() const
   }
   else
   {
-    return isLinkableInProject() || isReference();
+    bool isLinkable = isLinkableInProject() || isReference();
+
+    if (Config_getBool("NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP") && !isLinkable) {
+      isLinkable = isLinkableFromExternalMap();
+    }
+
+    return isLinkable;
   }
 }
 
