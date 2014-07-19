@@ -4151,7 +4151,15 @@ QCString MemberDef::objCMethodName(bool localLink,bool showStatic) const
   if (!localLink) // link to method of same class
   {
     qm+=" (";
-    qm+=m_impl->classDef->name();
+
+    QCString clName = m_impl->classDef->name();
+
+    if (Config_getBool("NIMBUSKIT_PRETTY_PROTOCOL_FORMATTING") && clName.right(2)=="-p")
+    {
+      clName="<"+clName.left(clName.length()-2)+">";
+    }
+
+    qm+=clName;
     qm+=")";
   }
   return qm;

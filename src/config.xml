@@ -3565,6 +3565,14 @@ will not have a "More..." link in their declaration.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_PRETTY_PROTOCOL_FORMATTING' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_PRETTY_PROTOCOL_FORMATTING tag is set to \c YES then protocol links will be
+written as <> rather than with a "-p" suffix.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
