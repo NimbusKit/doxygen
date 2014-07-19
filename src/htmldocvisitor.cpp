@@ -1954,7 +1954,10 @@ void HtmlDocVisitor::startLink(const QCString &ref,const QCString &file,
   }
   m_t << "href=\"";
   m_t << externalRef(relPath,ref,TRUE);
-  if (!file.isEmpty()) m_t << file << Doxygen::htmlFileExtension;
+  if (Config_getBool("NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP") && ref) {
+  } else {
+    if (!file.isEmpty()) m_t << file << Doxygen::htmlFileExtension;
+  }
   if (!anchor.isEmpty()) m_t << "#" << anchor;
   m_t << "\"";
   if (!tooltip.isEmpty()) m_t << " title=\"" << substitute(tooltip,"\"","&quot;") << "\"";
