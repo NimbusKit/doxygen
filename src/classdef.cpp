@@ -1289,7 +1289,7 @@ void ClassDef::writeInheritanceGraph(OutputList &ol)
   }
 
   // write subclasses
-  if (m_impl->inheritedBy && (count=m_impl->inheritedBy->count())>0)
+  if (!Config_getBool("NIMBUSKIT_HIDE_INHERITANCE_DESCRIPTION") && m_impl->inheritedBy && (count=m_impl->inheritedBy->count())>0)
   {
     ol.startParagraph();
     QCString inheritLine = theTranslator->trInheritedByList(m_impl->inheritedBy->count());
@@ -2087,7 +2087,7 @@ void ClassDef::writeDocumentation(OutputList &ol)
   addClassAttributes(ol);
   addGroupListToTitle(ol,this);
 
-  if (isObjectiveC() && baseClasses())
+  if (Config_getBool("NIMBUSKIT_TABLE_HEADER") && isObjectiveC() && baseClasses())
   {
     ol.pushGeneratorState();
     ol.disableAllBut(OutputGenerator::Html);
@@ -2107,6 +2107,7 @@ void ClassDef::writeDocumentation(OutputList &ol)
       }
     }
 
+    // Implemented protocols
     if (hasProtocols) {
       ol.writeString("<tr><td scope=\"row\"><strong><span class=\"noWrap\">Conforms to</span></strong></td><td><div class=\"zSharedSpecBoxHeadList\">");
       BaseClassListIterator bcli(*baseClasses());
@@ -2131,8 +2132,35 @@ void ClassDef::writeDocumentation(OutputList &ol)
           }
 
           ol.writeString("</span><br/>");
-          printf("isBaseClass() baseclass %s\n",ccd->name().data());
         }
+      }
+      ol.writeString("</div></td></tr>");
+    }
+
+    // Inherited by
+    if (m_impl->inheritedBy && m_impl->inheritedBy->count() > 0) {
+      ol.writeString("<tr><td scope=\"row\"><strong><span class=\"noWrap\">Inherited by</span></strong></td><td><div class=\"zSharedSpecBoxHeadList\">");
+      BaseClassListIterator bcli(*m_impl->inheritedBy);
+      for ( ; bcli.current(); ++bcli)
+      {
+        ClassDef *ccd=bcli.current()->classDef;
+        QCString name = ccd->name();
+        ol.writeString("<span class=\"content_text\">");
+
+        if (ccd->isLinkable())
+        {
+          ol.writeObjectLink(
+              ccd->getReference(),
+              ccd->getOutputFileBase(),
+              ccd->anchor(),
+              name);
+        }
+        else
+        {
+          ol.docify(name);
+        }
+
+        ol.writeString("</span><br/>");
       }
       ol.writeString("</div></td></tr>");
     }

@@ -3568,6 +3568,14 @@ written as <> rather than with a "-p" suffix.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_TABLE_HEADER' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_TABLE_HEADER tag is set to \c YES then a table header will be generated
+with details about the class/protocol.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>
