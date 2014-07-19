@@ -1629,8 +1629,16 @@ void MemberDef::writeDeclaration(OutputList &ol,
         if (isReference() && m_impl->classDef) rcd = m_impl->classDef;
         writeLink(ol,rcd,nd,fd,gd);
       }
-      if (Config_getBool("NIMBUSKIT_PROPERTIES_SUFFIX") && isObjCProperty()) {
-        ol.writeString(" <span class=\"suffix\">property</span>");
+      if (Config_getBool("NIMBUSKIT_PROPERTIES_SUFFIX")) {
+        if (isRequired()) {
+          if (isObjCProperty()) {
+            ol.writeString(" <span class=\"suffix\">required property</span>");
+          } else if (isObjCMethod()) {
+            ol.writeString(" <span class=\"suffix\">required method</span>");
+          }
+        } else if (isObjCProperty()) {
+          ol.writeString(" <span class=\"suffix\">property</span>");
+        }
       }
     }
     else if (isDocumentedFriendClass())
