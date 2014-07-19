@@ -7613,6 +7613,9 @@ QCString externalRef(const QCString &relPath,const QCString &ref,bool href)
       if (!href) result.prepend("doxygen=\""+ref+":");
       if (l>0 && result.at(l-1)!='/') result+='/';
       if (!href) result.append("\" ");
+
+    } else if (Config_getBool("NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP") && href) {
+      result = ref;
     }
   }
   else

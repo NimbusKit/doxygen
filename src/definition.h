@@ -230,6 +230,10 @@ class Definition : public DefinitionIntf
     /*! Returns TRUE if this definition is imported via a tag file. */
     virtual bool isReference() const;
 
+    /** returns TRUE iff a link is possible to an link in the external map.
+     */
+    bool isLinkableFromExternalMap() const;
+
     /*! Returns the first line of the body of this item (applicable to classes and 
      *  functions).
      */

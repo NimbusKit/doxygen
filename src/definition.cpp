@@ -1800,14 +1800,33 @@ bool Definition::isArtificial() const
   return m_impl->isArtificial;
 }
 
+bool Definition::isLinkableFromExternalMap() const
+{
+  //printf("Searching for link with name %s\n", name().data());
+  QCString *externalHref=Doxygen::externalLinkDict.find(name());
+  if (externalHref) {
+    //printf("Found external link: %s\n", externalHref->data());
+    return true;
+  }
+  return false;
+}
+
 QCString Definition::getReference() const 
 { 
-  return m_impl->ref; 
+  QCString ref = m_impl->ref;
+  if (!ref.data() && Config_getBool("NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP") && isLinkableFromExternalMap()) {
+    ref = *Doxygen::externalLinkDict.find(name());
+  }
+  return ref;
 }
 
 bool Definition::isReference() const 
 { 
-  return !m_impl->ref.isEmpty(); 
+  bool isReference = !m_impl->ref.isEmpty();
+  if (!isReference && Config_getBool("NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP")) {
+    isReference = isLinkableFromExternalMap();
+  }
+  return isReference;
 }
 
 int Definition::getStartBodyLine() const         

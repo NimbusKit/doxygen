@@ -160,10 +160,6 @@ class ClassDef : public Definition
      */
     bool isLinkableInProject() const;
 
-    /** returns TRUE iff a link is possible to an link in the external map.
-     */
-    bool isLinkableFromExternalMap() const;
-
     /** return TRUE iff a link to this class is possible (either within 
      *  this project, or as a cross-reference to another project).
      */

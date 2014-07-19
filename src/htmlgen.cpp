@@ -1941,7 +1941,11 @@ void HtmlGenerator::writeObjectLink(const char *ref,const char *f,
   }
   t << "href=\"";
   t << externalRef(relPath,ref,TRUE);
-  if (f) t << f << Doxygen::htmlFileExtension;
+  if (Config_getBool("NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP") && ref) {
+    // do nothing
+  } else {
+    if (f) t << f << Doxygen::htmlFileExtension;
+  }
   if (anchor) t << "#" << anchor;
   t << "\">";
   if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
