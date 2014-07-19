@@ -123,6 +123,7 @@ class Doxygen
     static FormulaDict              *formulaNameDict;
     static StringDict                tagDestinationDict; 
     static StringDict                aliasDict; 
+    static StringDict                externalLinkDict; 
     static QIntDict<MemberGroupInfo> memGrpInfoDict;
     static QDict<void>               expandAsDefinedDict;
     static NamespaceDef             *globalScope;
@@ -162,6 +163,7 @@ void searchInputFiles(StringList &inputFiles);
 void parseInput();
 void generateOutput();
 void readAliases();
+void readExternalLinks();
 void readFormulaRepository();
 void cleanUpDoxygen();
 int readFileOrDirectory(const char *s,

@@ -3576,6 +3576,30 @@ with details about the class/protocol.
 ]]>
       </docs>
     </option>
+    <option type='bool' id='NIMBUSKIT_ENABLE_EXTERNAL_LINK_MAP' defval='0'>
+      <docs>
+<![CDATA[
+If the \c NIMBUSKIT_EXTERNAL_LINK_MAP tag is set to \c YES then an external link map can be used
+to linkify words found in external documentation.
+]]>
+      </docs>
+    </option>
+    <option type='list' id='NIMBUSKIT_EXTERNAL_LINK_MAP' format='string'>
+      <docs>
+<![CDATA[
+ This tag can be used to specify a number of links to external documentation.
+ An external link has the form: 
+\verbatim
+ word=link
+\endverbatim
+ For example adding 
+\verbatim
+ "NSObject=http://path.to/external/docs.html\n" 
+\endverbatim
+ will linkify any instance of NSObject to http://path.to/external/docs.html.
+]]>
+      </docs>
+    </option>
 
     <option type='obsolete' id='USE_WINDOWS_ENCODING'/>
     <option type='obsolete' id='DETAILS_AT_TOP'/>

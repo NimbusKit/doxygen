@@ -128,6 +128,7 @@ PageSDict       *Doxygen::exampleSDict = 0;
 SectionDict     *Doxygen::sectionDict = 0;        // all page sections
 CiteDict        *Doxygen::citeDict=0;              // database of bibliographic references
 StringDict       Doxygen::aliasDict(257);          // aliases
+StringDict       Doxygen::externalLinkDict(257);   // external links
 QDict<void>      Doxygen::inputPaths(1009);
 FileNameDict    *Doxygen::includeNameDict = 0;     // include names
 FileNameDict    *Doxygen::exampleNameDict = 0;     // examples
@@ -272,6 +273,8 @@ void statistics()
   //g_excludeNameDict.statistics();
   fprintf(stderr,"--- aliasDict stats ----\n");
   Doxygen::aliasDict.statistics();
+  fprintf(stderr,"--- externalLink stats ----\n");
+  Doxygen::externalLinkDict.statistics();
   fprintf(stderr,"--- typedefDict stats ----\n");
   fprintf(stderr,"--- namespaceAliasDict stats ----\n");
   Doxygen::namespaceAliasDict.statistics();
@@ -9742,6 +9745,41 @@ void readAliases()
   escapeAliases();
 }
 
+void readExternalLinks()
+{ 
+  // add external links to a dictionary
+  Doxygen::externalLinkDict.setAutoDelete(TRUE);
+  QStrList &linksList = Config_getList("NIMBUSKIT_EXTERNAL_LINK_MAP");
+  const char *s=linksList.first();
+  while (s)
+  {
+    if (Doxygen::externalLinkDict[s]==0)
+    {
+      QCString externalLink=s;
+      int i=externalLink.find('=');
+      if (i>0)
+      {
+        QCString name=externalLink.left(i).stripWhiteSpace();
+        QCString href=externalLink.right(externalLink.length()-i-1);
+        //printf("External link: found name=`%s' href=`%s'\n",name.data(),href.data()); 
+        if (!name.isEmpty())
+        {
+          QCString *dn=Doxygen::externalLinkDict[name];
+          if (dn==0) // insert new external link
+          {
+            Doxygen::externalLinkDict.insert(name,new QCString(href));
+          }
+          else // overwrite previous external link
+          {
+            *dn=href;
+          }
+        }
+      }
+    }
+    s=linksList.next();
+  }
+}
+
 //----------------------------------------------------------------------------
 
 static void dumpSymbol(FTextStream &t,Definition *d)
@@ -10445,6 +10483,7 @@ void adjustConfiguration()
 
   // read aliases and store them in a dictionary
   readAliases();
+  readExternalLinks();
 
   // store number of spaces in a tab into Doxygen::spaces
   int &tabSize = Config_getInt("TAB_SIZE");
