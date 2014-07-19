@@ -161,9 +161,27 @@ void HtmlDocVisitor::visit(DocLinkedWord *w)
 {
   if (m_hide) return;
   //printf("linked word: %s\n",w->word().data());
-  startLink(w->ref(),w->file(),w->relPath(),w->anchor(),w->tooltip());
+  bool shouldLinkify = true;
+
+  if (Config_getBool("NIMBUSKIT_DONT_LINKIFY_SELF") && m_ctx && m_ctx->name() == w->word()) {
+    shouldLinkify = false;
+  }
+
+  if (shouldLinkify) {
+    startLink(w->ref(),w->file(),w->relPath(),w->anchor(),w->tooltip());
+  } else {
+    if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
+      m_t << "<code>";
+    }
+  }
   filter(w->word());
-  endLink();
+  if (shouldLinkify) {
+    endLink();
+  } else {
+    if (Config_getBool("NIMBUSKIT_LINKS_ARE_CODE")) {
+      m_t << "</code>";
+    }
+  }
 }
 
 void HtmlDocVisitor::visit(DocWhiteSpace *w)
