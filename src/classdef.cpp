@@ -2097,6 +2097,7 @@ void ClassDef::writeDocumentation(OutputList &ol)
     ol.writeString("<table cellspacing=\"0\" class=\"specbox\"><tbody>");
 
     bool hasProtocols = false;
+    bool hasClassInheritance = false;
     {
       BaseClassListIterator bcli(*baseClasses());
       for ( ; bcli.current(); ++bcli)
@@ -2105,9 +2106,41 @@ void ClassDef::writeDocumentation(OutputList &ol)
         // Protocols have a ccd->name() with -p suffix.
         if (ccd->name().right(2)=="-p") {
           hasProtocols = true;
-          break;
+        } else {
+          hasClassInheritance = true;
         }
       }
+    }
+
+    // Inherits
+    if (hasClassInheritance) {
+      ol.writeString("<tr><td scope=\"row\"><strong><span class=\"noWrap\">Inherits from</span></strong></td><td><div class=\"zSharedSpecBoxHeadList\">");
+      BaseClassListIterator bcli(*m_impl->inherits);
+      for ( ; bcli.current(); ++bcli)
+      {
+        ClassDef *ccd=bcli.current()->classDef;
+        QCString name = ccd->name();
+        if (name.right(2)=="-p") {
+          continue;
+        }
+        ol.writeString("<span class=\"content_text\">");
+
+        if (ccd->isLinkable())
+        {
+          ol.writeObjectLink(
+              ccd->getReference(),
+              ccd->getOutputFileBase(),
+              ccd->anchor(),
+              name);
+        }
+        else
+        {
+          ol.docify(name);
+        }
+
+        ol.writeString("</span><br/>");
+      }
+      ol.writeString("</div></td></tr>");
     }
 
     // Implemented protocols
