@@ -3047,7 +3047,7 @@ void MemberDef::writeDocumentation(MemberList *ml,OutputList &ol,
   }
 
   /* write detailed description */
-  if (!detailed.isEmpty() ||
+  if (!detailed.stripWhiteSpace().isEmpty() ||
       !inbodyDocumentation().isEmpty())
   {
     if (Config_getBool("NIMBUSKIT_DISCUSSION_AND_BRIEF")) {
